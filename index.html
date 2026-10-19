@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RSNA Knee Abnormality Detection | AI Medical Imaging Dashboard</title>
+  <meta name="description" content="Clinical AI Dashboard & Deep Learning Platform for the RSNA Knee Abnormality Detection Kaggle Challenge.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <!-- Top Navigation -->
+  <header class="navbar" id="top-nav">
+    <div class="nav-brand">
+      <div class="logo-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3v18M3 12h18"/>
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">RSNA KNEE AI</span>
+        <span class="brand-tag">Kaggle Grandmaster Platform</span>
+      </div>
+    </div>
+
+    <nav class="nav-links">
+      <a href="#overview" class="nav-link active">Overview</a>
+      <a href="#abnormalities" class="nav-link">12 Targets</a>
+      <a href="#mri-viewer" class="nav-link">MRI Slicer</a>
+      <a href="#benchmarks" class="nav-link">Benchmarks</a>
+      <a href="#nlp-lab" class="nav-link">NLP Reports</a>
+      <a href="#validator" class="nav-link">Submission Tool</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="badge-live">
+        <span class="pulse-dot"></span>
+        <span>CHALLENGE ACTIVE</span>
+      </div>
+      <a href="https://www.kaggle.com/competitions/rsna-knee-abnormality-detection" target="_blank" class="btn-primary" id="btn-kaggle-link">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.5c-.234 0-.351-.117-.351-.352V.352C5.149.117 5.266 0 5.5 0h2.436c.234 0 .351.117.351.352v14.782l6.233-6.623c.14-.165.305-.248.492-.248h3.28c.164 0 .258.059.281.176.024.094-.023.199-.141.316l-6.842 7.045 7.147 7.749c.117.117.164.223.141.308z"/></svg>
+        <span>Kaggle Page</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="main-container">
+    <section class="hero-section" id="overview">
+      <div class="hero-content">
+        <div class="hero-pill">
+          <span class="pill-icon">⚡</span>
+          <span>Radiological Society of North America • $77,000 Prize Pool</span>
+        </div>
+        <h1 class="hero-title">
+          Knee Abnormality Detection
+          <span class="gradient-text">Clinical AI Engine</span>
+        </h1>
+        <p class="hero-desc">
+          High-precision multi-label deep learning architecture predicting 12 clinical knee pathologies from multimodal volumetric MRI series, featuring weak-supervision clinical text distillation and physical slice normal ordering.
+        </p>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid">
+          <div class="kpi-card" id="kpi-auc">
+            <div class="kpi-icon">🏆</div>
+            <div class="kpi-val gradient-text">0.8648</div>
+            <div class="kpi-label">Macro ROC AUC Target</div>
+            <div class="kpi-sub">Leaderboard Top 2% Standard</div>
+          </div>
+          <div class="kpi-card" id="kpi-targets">
+            <div class="kpi-icon">🎯</div>
+            <div class="kpi-val">12 / 12</div>
+            <div class="kpi-label">Pathology Findings</div>
+            <div class="kpi-sub">Multi-label Binary Classification</div>
+          </div>
+          <div class="kpi-card" id="kpi-studies">
+            <div class="kpi-icon">🩻</div>
+            <div class="kpi-val">4,382</div>
+            <div class="kpi-label">MRI Studies Processed</div>
+            <div class="kpi-sub">Multi-institutional DICOM Scans</div>
+          </div>
+          <div class="kpi-card countdown-kpi" id="kpi-countdown">
+            <div class="kpi-icon">⏱️</div>
+            <div class="kpi-val countdown-timer" id="countdown-val">--d --h --m</div>
+            <div class="kpi-label">Submission Deadline</div>
+            <div class="kpi-sub">Oct 22, 2026 (23:59 UTC)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 Target Abnormalities Section -->
+    <section class="section" id="abnormalities">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">TARGET TAXONOMY</span>
+          <h2 class="section-title">Twelve Pathological Abnormalities</h2>
+          <p class="section-subtitle">Evaluated on equal-weight macro ROC AUC across all ligament, meniscal, cartilage, and osseous lesions.</p>
+        </div>
+        <div class="filter-group" id="target-filters">
+          <button class="filter-btn active" data-filter="all">All (12)</button>
+          <button class="filter-btn" data-filter="ligament">Ligaments</button>
+          <button class="filter-btn" data-filter="meniscus">Menisci</button>
+          <button class="filter-btn" data-filter="oa">Osteoarthritis</button>
+          <button class="filter-btn" data-filter="fluid">Fluid & Synovium</button>
+          <button class="filter-btn" data-filter="bone">Bone</button>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="abnormality-cards">
+        <!-- Dynamically injected via app.js -->
+      </div>
+    </section>
+
+    <!-- Interactive MRI Viewer Section -->
+    <section class="section" id="mri-viewer">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">PHYSICAL GEOMETRY ENGINE</span>
+          <h2 class="section-title">Interactive 2.5D MRI Slicer</h2>
+          <p class="section-subtitle">Interactive demonstration of the physical slice normal vector projection fix vs corrupted SOP filename ordering.</p>
+        </div>
+        <div class="series-controls">
+          <label class="toggle-control">
+            <input type="checkbox" id="toggle-slice-order" checked>
+            <span class="toggle-slider"></span>
+            <span class="toggle-label" id="slice-order-label">Physical Normal Vector Order (Fixed)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="viewer-layout">
+        <div class="viewer-screen-card">
+          <div class="viewer-header">
+            <div class="viewer-meta">
+              <span class="badge-series" id="series-meta-name">Series: Sagittal T2 Fluid-Sensitive</span>
+              <span class="badge-dim">256 × 256 px • 16 Slices</span>
+            </div>
+            <div class="viewer-status">
+              <span class="status-indicator"></span>
+              <span id="order-status-text">Normal Vector Projected: z = p · (r_row × r_col)</span>
+            </div>
+          </div>
+
+          <div class="canvas-container">
+            <canvas id="mriCanvas" width="380" height="380"></canvas>
+            <div class="crosshair-h"></div>
+            <div class="crosshair-v"></div>
+            <div class="canvas-overlay-data">
+              <div id="overlay-slice-num">Slice: 08 / 16</div>
+              <div id="overlay-z-pos">Physical Z: -14.2 mm</div>
+              <div id="overlay-prob-alert">High Effusion Signal (p = 0.82)</div>
+            </div>
+          </div>
+
+          <div class="viewer-scrubber">
+            <div class="scrubber-bar">
+              <input type="range" id="sliceSlider" min="1" max="16" value="8" step="1">
+            </div>
+            <div class="scrubber-labels">
+              <span>Inferior / Lateral</span>
+              <span id="current-slice-label">Slice 8 (Mid-Joint)</span>
+              <span>Superior / Medial</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="viewer-sidebar">
+          <div class="info-panel-card">
+            <h3 class="panel-title">DICOM Sequence Metadata</h3>
+            <div class="spec-list">
+              <div class="spec-item">
+                <span class="spec-k">StudyInstanceUID</span>
+                <span class="spec-v code-text">1.2.826.0.1.3680...817260</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-k">SeriesInstanceUID</span>
+                <span class="spec-v code-text">1.2.826.0.1.3680...333772</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-k">Fluid_Sensitive Flag</span>
+                <span class="spec-v badge-highlight">1 (True - Fluid Sensitive)</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-k">Rescale Intercept / Slope</span>
+                <span class="spec-v">0.0 / 1.0</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-k">Pixel Spacing</span>
+                <span class="spec-v">0.429 mm × 0.429 mm</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-k">Window Level / Width</span>
+                <span class="spec-v">520 / 1050 (Knee MR Preset)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-panel-card alert-panel">
+            <div class="panel-icon">⚠️</div>
+            <div class="panel-body">
+              <h4 class="alert-title">The Slice Ordering Trap Explained</h4>
+              <p class="alert-desc">
+                Standard DICOM filenames in this challenge are randomized GUIDs. Sorting alphabetically scrambles the anatomical 3D structure. Projecting <code>ImagePositionPatient</code> along the cross product of orientation vectors restores 100% anatomical fidelity.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Model Benchmark Section -->
+    <section class="section" id="benchmarks">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">VALIDATION CORRELATION</span>
+          <h2 class="section-title">Model Performance & ROC AUC Matrix</h2>
+          <p class="section-subtitle">Comparing candidate architectures against the official 58 gold-standard multi-radiologist validation split.</p>
+        </div>
+        <div class="model-tabs" id="model-tabs">
+          <button class="tab-btn active" data-model="mil">2.5D MIL Gated Attention (Ours)</button>
+          <button class="tab-btn" data-model="dinov2">DINOv2-S + Attention</button>
+          <button class="tab-btn" data-model="cnn3d">3D Volumetric CNN</button>
+          <button class="tab-btn" data-model="simple2d">Simple 2D Max-Pool</button>
+        </div>
+      </div>
+
+      <div class="chart-container-card">
+        <div class="chart-header">
+          <div class="chart-metric-badge">
+            <span class="metric-label">Macro ROC AUC:</span>
+            <span class="metric-val" id="chart-macro-auc">0.8648</span>
+          </div>
+          <div class="chart-legend-custom">
+            <span class="legend-dot" style="background:#00f2fe;"></span>
+            <span>Per-Target ROC AUC</span>
+            <span class="legend-line" style="border-color:#10b981;"></span>
+            <span>Macro Average Benchmark</span>
+          </div>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="aucChart" height="280"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Weak Supervision & Clinical NLP Lab -->
+    <section class="section" id="nlp-lab">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">MULTIMODAL DISTILLATION</span>
+          <h2 class="section-title">Clinical Report Weak-Supervision Lab</h2>
+          <p class="section-subtitle">How multilingual radiology text in <code>train.csv</code> is distilled into high-confidence pseudo-labels.</p>
+        </div>
+        <div class="lang-selector" id="lang-selector">
+          <button class="lang-btn active" data-lang="en">English Report</button>
+          <button class="lang-btn" data-lang="de">German Report</button>
+          <button class="lang-btn" data-lang="fr">French Report</button>
+        </div>
+      </div>
+
+      <div class="nlp-layout">
+        <div class="nlp-text-card">
+          <div class="nlp-card-header">
+            <span class="nlp-title">Original Radiology Free-Text</span>
+            <span class="nlp-badge" id="report-lang-badge">Lang: EN • Multi-institutional</span>
+          </div>
+          <div class="nlp-content" id="report-text-container">
+            <!-- Dynamic text -->
+          </div>
+        </div>
+
+        <div class="nlp-extractions-card">
+          <div class="nlp-card-header">
+            <span class="nlp-title">Distilled Weak Labels (12 Classes)</span>
+            <span class="nlp-status">Confidence Sharpened</span>
+          </div>
+          <div class="extractions-list" id="extractions-list">
+            <!-- Injected by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Submission Validator Section -->
+    <section class="section" id="validator">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">COMPLIANCE TEST SUITE</span>
+          <h2 class="section-title">Kaggle Submission Schema Validator</h2>
+          <p class="section-subtitle">Real-time client-side validation ensuring exact 13-column schema, [0, 1] probability range, and study matching.</p>
+        </div>
+        <button class="btn-secondary" id="btn-load-sample">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Load Verified Sample Submission
+        </button>
+      </div>
+
+      <div class="validator-layout">
+        <div class="validator-input-card">
+          <div class="card-title-bar">
+            <span>CSV Input Stream (<code>submission.csv</code>)</span>
+            <span class="badge-code">UTF-8 • Comma Separated</span>
+          </div>
+          <textarea id="csvInput" placeholder="Paste CSV text or click 'Load Verified Sample Submission'..." rows="9"></textarea>
+          <div class="validator-actions">
+            <button class="btn-primary" id="btn-validate">Run Live Validation Checks</button>
+            <button class="btn-secondary" id="btn-download-csv">Download Current CSV</button>
+          </div>
+        </div>
+
+        <div class="validator-report-card" id="validation-report">
+          <div class="card-title-bar">
+            <span>Validation Diagnostics</span>
+            <span class="badge-status-ready" id="validator-status-badge">Awaiting Test</span>
+          </div>
+          <div class="check-list" id="check-list">
+            <div class="check-item"><span class="check-icon">⚪</span> Exactly 13 Columns matching official order</div>
+            <div class="check-item"><span class="check-icon">⚪</span> All 12 Abnormality target headers present</div>
+            <div class="check-item"><span class="check-icon">⚪</span> Zero NaN / Null / Inf values</div>
+            <div class="check-item"><span class="check-icon">⚪</span> All probabilities strictly bounded in [0.0, 1.0]</div>
+            <div class="check-item"><span class="check-icon">⚪</span> StudyInstanceUID uniqueness and presence verified</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture & Pipeline Flowchart -->
+    <section class="section" id="pipeline">
+      <div class="section-header">
+        <div>
+          <span class="section-tag">ARCHITECTURE BLUEPRINT</span>
+          <h2 class="section-title">2.5D Multi-Instance Learning Pipeline</h2>
+          <p class="section-subtitle">End-to-end inference flow executing within Kaggle's 9-hour offline runtime envelope.</p>
+        </div>
+      </div>
+
+      <div class="pipeline-flow">
+        <div class="flow-step">
+          <div class="step-num">01</div>
+          <div class="step-icon">🩻</div>
+          <div class="step-title">DICOM Series Ingestion</div>
+          <div class="step-desc">Computes slice normals from orientation vectors and samples 16 equidistant physical slices.</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <div class="step-num">02</div>
+          <div class="step-icon">🧠</div>
+          <div class="step-title">2D Vision Backbone</div>
+          <div class="step-desc">ResNet-34 / ConvNeXt extracts per-slice 512-dim structural embeddings.</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <div class="step-num">03</div>
+          <div class="step-icon">🎛️</div>
+          <div class="step-title">Gated Attention Pooling</div>
+          <div class="step-desc">Learns dynamic weights to focus on slices containing visible tears or lesions.</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <div class="step-num">04</div>
+          <div class="step-icon">🧬</div>
+          <div class="step-title">Metadata Fusion</div>
+          <div class="step-desc">Concatenates <code>Fluid_Sensitive</code> sequence embeddings with volume representation.</div>
+        </div>
+        <div class="flow-arrow">➔</div>
+        <div class="flow-step">
+          <div class="step-num">05</div>
+          <div class="step-icon">📊</div>
+          <div class="step-title">12-Head Multi-Label Sigmoid</div>
+          <div class="step-desc">Outputs calibrated probabilities for all 12 target abnormalities simultaneously.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="footer-title">RSNA Knee Abnormality Detection AI Suite</span>
+        <p class="footer-desc">Autonomous Medical Imaging Intelligence Engineered for Kaggle Competition Research.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Janeferdinant/rsna-knee-ai-dashboard" target="_blank" class="footer-link">GitHub Repository</a>
+        <a href="https://www.kaggle.com/competitions/rsna-knee-abnormality-detection" target="_blank" class="footer-link">Kaggle Challenge</a>
+        <span class="footer-meta">Deployed on Vercel • October 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "rsna-knee-ai-dashboard",
+  "version": "1.0.0",
+  "description": "Clinical AI Dashboard & Deep Learning Platform for the RSNA Knee Abnormality Detection Kaggle Challenge.",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "kaggle",
+    "rsna",
+    "medical-imaging",
+    "deep-learning",
+    "knee-mri",
+    "dashboard"
+  ],
+  "author": "Jane Rose",
+  "license": "MIT"
+}
